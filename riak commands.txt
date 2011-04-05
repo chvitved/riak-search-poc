@@ -1,0 +1,3 @@
+bin/search-cmd install log
+
+bin/search-cmd set_schema log /Users/chr/workspace/riak-search-poc/schema.erl

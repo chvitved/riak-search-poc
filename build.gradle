@@ -1,0 +1,45 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+defaultTasks 'jar'
+
+group = 'com.trifork'
+version = new Date().format('MM-dd-yyyy_hhmmss')
+
+targetCompatibility = 1.6
+sourceCompatibility = 1.6
+
+dependencies {
+    compile 'com.basho.riak:riak-client:0.14.1-trifork'
+}
+
+sourceSets { 
+	main {
+		java { 
+			srcDir 'src'
+		} 
+		resources {
+			srcDir 'src'	
+		}
+	}
+	test {
+		java { 
+			srcDir 'test'
+		} 
+		resources {
+			srcDir 'test'	
+		}
+	}
+}
+
+repositories {
+	mavenLocal()
+	mavenRepo name: 'trifork-releases', urls: 'http://nexus.ci81.trifork.com/content/groups/public/'
+	mavenRepo name: 'trifork-snapshots', urls: 'http://nexus.ci81.trifork.com/content/groups/public-snapshots/'
+}
+
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    manifest {
+        attributes 'Main-Class':'com.trifork.riaksearchpoc.TestClient' 
+    }
+}
