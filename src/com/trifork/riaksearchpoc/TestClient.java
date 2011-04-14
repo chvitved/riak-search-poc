@@ -14,7 +14,7 @@ import com.basho.riak.client.util.Constants;
 
 public class TestClient {
 	
-	private static final int THREADS = 200;
+	private static final int THREADS = 100;
 
 	Util util = new Util();
 	
@@ -34,7 +34,8 @@ public class TestClient {
 						try {
 							final long id = random.nextLong();
 							final String time = util.getTimeFormatter().format(new Date());
-							createObject(id, random.nextInt(5000), time);
+ 							String key = (System.nanoTime()/1000000000) + "" + id;
+							createObject(key, id, random.nextInt(5000), time);
 							monitor.increment();
 						} catch(Exception e) {
 							e.printStackTrace();
@@ -47,12 +48,12 @@ public class TestClient {
 	
 	static Charset UTF8 = Charset.forName("UTF-8");
 	
-	private void createObject(long id, long code, String time) throws JSONException {
+	private void createObject(String key, long id, long code, String time) throws JSONException {
 		JSONObject jo = new JSONObject();
 		jo.put("id", id++);
 		jo.put("time", time);
 		jo.put("code", code);
-		RiakObject o = new RiakObject("log", id + "", jo.toString(1).getBytes(UTF8), Constants.CTYPE_JSON_UTF8);
+		RiakObject o = new RiakObject("log", key, jo.toString(1).getBytes(UTF8), Constants.CTYPE_JSON_UTF8);
 		StoreResponse res = util.getClient().store(o, util.getMeta());
 		if (res.isError()) {
 			System.out.println(String.format("failed to store. Code %d. Body\n %s", res.getStatusCode(), res.getBodyAsString()));

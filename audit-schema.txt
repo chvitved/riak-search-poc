@@ -1,0 +1,25 @@
+{
+    schema,
+    [
+        {version, "0.1"},
+        {default_field, "datetime"},
+        {default_op, "and"},
+        {n_val, 3},
+        {analyzer_factory, {erlang, text_analyzers, noop_analyzer_factory}}
+    ],
+    [
+        {field, [
+		    {name, "time"},
+        	{type, integer},
+	        {analyzer_factory, {erlang, text_analyzers, noop_analyzer_factory}}
+		]},        
+        {field, [
+            {name, "patientPersonIdAndTime"},
+            {analyzer_factory, {erlang, text_analyzers, noop_analyzer_factory}}
+        ]},
+        {field, [
+            {name, "doctorPersonIdAndTime"},
+            {analyzer_factory, {erlang, text_analyzers, noop_analyzer_factory}}
+        ]}
+    ]
+}.

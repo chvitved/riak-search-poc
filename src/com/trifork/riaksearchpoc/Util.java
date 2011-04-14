@@ -13,8 +13,11 @@ public class Util {
 	private RoundRobbinLoadBalancer rrloadBalancer;
 	private RequestMeta meta = setupMeta();
 	
+	Util() {
+		rrloadBalancer = new RoundRobbinLoadBalancer("riak01", "riak02", "riak05");
+	}
+	
 	private RequestMeta setupMeta() {
-		rrloadBalancer = new RoundRobbinLoadBalancer("riak02.local", "riak03.local", "riak04.local", "riak05.local");
 		RequestMeta meta = new RequestMeta();
 		meta.setClientId("testclient");
 		meta.setQueryParam(Constants.QP_RETURN_BODY, "false");
